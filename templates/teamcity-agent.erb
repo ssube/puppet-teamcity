@@ -41,7 +41,10 @@ status() {
   else
     RUNNING=1
   fi
-  if [ $RUNNING ]; then echo "teamcity-agent is running"; fi
+  if [ $RUNNING == 0 ]; 
+  then 
+    echo "teamcity-agent is running"; 
+  fi
   return $RUNNING
 }
 

@@ -52,7 +52,6 @@ class teamcity::agent(
     subscribe   => Class['teamcity::agent::install'],
     require     => [
       Anchor['teamcity::agent::start'],
-      User[$user],
       File[$home]
     ],
     before      => Anchor['teamcity::agent::end'],

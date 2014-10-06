@@ -1,5 +1,6 @@
 class teamcity::agent(
   $user            = 'teamcity-agent',
+  $manage_user     = true,
   $server_url      = 'http://tc-server-01:8111',
   $agent_name      = $::hostname,
   $own_port        = 9090,
@@ -27,13 +28,15 @@ class teamcity::agent(
   include teamcity::agent::install
   include teamcity::agent::env
 
-  user { $user:
-    ensure  => present,
-    system  => true,
-    home    => $home,
-    gid     => $teamcity::common::group,
-    require => Anchor['teamcity::agent::start'],
-    before  => Anchor['teamcity::agent::end'],
+  if $manage_user {
+    user { $user:
+      ensure  => present,
+      system  => true,
+      home    => $home,
+      gid     => $teamcity::common::group,
+      require => Anchor['teamcity::agent::start'],
+      before  => Anchor['teamcity::agent::end'],
+    }
   }
 
   teamcity::agent::env::bash_profile { 'env:WORK_DIR':

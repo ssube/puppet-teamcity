@@ -34,8 +34,13 @@ stop() {
 }
 
 status() {
-  ps -p $(cat $PIDFILE) > /dev/null
-  RUNNING=$?
+  if [ -e "$PIDFILE" ];
+  then
+    ps -p $(cat $PIDFILE) > /dev/null
+    RUNNING=$?
+  else
+    RUNNING=1
+  fi
   if [ $RUNNING ]; then echo "teamcity-agent is running"; fi
   return $RUNNING
 }

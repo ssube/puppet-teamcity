@@ -18,13 +18,26 @@ NAME=<%= @agent_name %>
 PIDFILE=<%= @temp_dir %>/buildAgent.pid
 
 start() {
-  echo "starting teamcity-agent"
-  su -s /bin/bash -c "$SCRIPT start" $USER
+  if [ status ];
+  then
+    echo "teamcity-agent is already running"
+  else
+    echo "starting teamcity-agent"
+    rm -f "$PIDFILE"
+    su -s /bin/bash -c "$SCRIPT start" $USER
+  fi
 }
 
 stop() {
   echo "stopping teamcity-agent"
   su -s /bin/bash -c "$SCRIPT stop" $USER
+}
+
+status() {
+  ps -p $(cat $PIDFILE) > /dev/null
+  RUNNING=$?
+  if [ $RUNNING ]; then echo "teamcity-agent is running"; fi
+  return $RUNNING
 }
 
 case "$1" in
@@ -41,7 +54,7 @@ case "$1" in
     ;;
   status)
     # This needs improved to use the pid
-    ps -p $(cat $PIDFILE) > /dev/null
+    status
     exit $?
     ;;
   *)

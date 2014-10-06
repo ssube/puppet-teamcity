@@ -17,17 +17,27 @@ SCRIPT=<%= @home %>/bin/agent.sh
 NAME=<%= @agent_name %>
 PIDFILE=<%= @temp_dir %>/buildAgent.pid
 
+start() {
+  echo "starting teamcity-agent"
+  su -s /bin/bash -c "$SCRIPT start" $USER
+}
+
+stop() {
+  echo "stopping teamcity-agent"
+  su -s /bin/bash -c "$SCRIPT stop" $USER
+}
+
 case "$1" in
   start)
-    su $USER --login -c "$SCRIPT start"
+    start
     ;;
   stop)
-    su $USER --login -c "$SCRIPT stop"
+    stop
     ;;
   restart)
-    su $USER --login -c "$SCRIPT stop"
+    stop
     sleep 2
-    su $USER --login -c "$SCRIPT start"
+    start
     ;;
   status)
     # This needs improved to use the pid

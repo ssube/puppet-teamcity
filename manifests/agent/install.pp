@@ -15,7 +15,6 @@ class teamcity::agent::install {
     cwd     => '/tmp',
     creates => $teamcity::agent::home,
     require => [
-      User[$teamcity::agent::user],
       Wget::Fetch['download']
     ],
     user    => 'root',

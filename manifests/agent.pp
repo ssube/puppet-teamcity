@@ -92,8 +92,7 @@ class teamcity::agent(
   service { $service:
     ensure     => running,
     enable     => true,
-    status     => 'ps aux | grep /usr/bin/java | grep AgentMain',
-    hasstatus  => false,
+    hasstatus  => true,
     hasrestart => true,
     require    => [
       Anchor['teamcity::agent::start'],

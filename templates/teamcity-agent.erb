@@ -19,19 +19,20 @@ PIDFILE=<%= @temp_dir %>/buildAgent.pid
 
 case "$1" in
   start)
-    sudo -H -u $USER /bin/bash --login -c "$SCRIPT start"
+    su $USER --login -c "$SCRIPT start"
     ;;
   stop)
-    sudo -H -u $USER /bin/bash --login -c "$SCRIPT stop"
+    su $USER --login -c "$SCRIPT stop"
     ;;
   restart)
-    sudo -H -u $USER /bin/bash --login -c "$SCRIPT stop"
+    su $USER --login -c "$SCRIPT stop"
     sleep 2
-    sudo -H -u $USER /bin/bash --login -c "$SCRIPT start"
+    su $USER --login -c "$SCRIPT start"
     ;;
   status)
-    # TODO: fix status
-    # status_of_proc -p $PIDFILE $SCRIPT $NAME
+    # This needs improved to use the pid
+    ps -p $(cat $PIDFILE) > /dev/null
+    exit $?
     ;;
   *)
     echo "Usage: $0 {start|stop|restart}"

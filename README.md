@@ -60,6 +60,18 @@ despite spending about 3 hours on it, so just go with the default folders.
 
 You'll need about 400 MiB minimum for each agent you want to run on a node.
 
+### Install
+
+If you are using directory environments, run:
+
+> pushd /etc/puppet/environments/production # replace with the environment name
+> git clone https://github.com/haf/puppet-teamcity.git teamcity
+
+Otherwise, run:
+
+> pushd /etc/puppet/modules # or your custom module directory
+> git clone https://github.com/haf/puppet-teamcity.git teamcity
+
 ### License
 
 MIT

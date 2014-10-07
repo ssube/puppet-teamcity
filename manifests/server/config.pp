@@ -1,19 +1,11 @@
 class teamcity::server::config(
   $content
 ) {
-  File {
+  file { ["$teamcity::server::home_dir", "$teamcity::server::log_dir", "$teamcity::server::data_dir"]:
     owner   => $teamcity::server::user,
     group   => $teamcity::common::group,
     mode    => '0755',
-  }
-
-  file {
-    $teamcity::server::home_dir:
-      ensure => directory;
-    $teamcity::server::log_dir:
-      ensure => directory;
-    $teamcity::server::data_dir:
-      ensure => directory,
+    ensure => directory,
   }
 
   file { "/etc/init.d/$teamcity::server::service":

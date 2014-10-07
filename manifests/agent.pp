@@ -80,7 +80,8 @@ class teamcity::agent(
     ],
     before  => Anchor['teamcity::agent::end'],
   }
-  if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7')) {
+  if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) 
+      or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7'))) {
     file { "/etc/init.d/$service":
       ensure  => present,
       content => template('teamcity/teamcity-agent-systemd.erb'),

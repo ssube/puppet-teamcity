@@ -13,7 +13,8 @@ class teamcity::server(
   $port            = 8111,
   $server_opts     = '',
   $server_mem_opts = '-Xms1g -Xmx2g -XX:MaxPermSize=270m',
-  $db_type         = 'hsqldb'
+  $db_type         = 'hsqldb',
+  $package_name    = 'teamcity-server'
 ) {
   $service      = 'teamcity-server'
   $bin_dir      = "${home_dir}/bin"
@@ -37,7 +38,7 @@ class teamcity::server(
   include teamcity::db
   contain teamcity::db
 
-  package { 'teamcity-server':
+  package { "$package_name":
     ensure  => installed,
   }
 

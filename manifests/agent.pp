@@ -78,6 +78,14 @@ class teamcity::agent(
     before  => Anchor['teamcity::agent::end'],
   }
   
+  file { "$home/bin/sys-agent.sh":
+    ensure  => present,
+    content => template('teamcity/sys-agent.erb'),
+    mode    => '0755',
+    require => Anchor['teamcity::agent::start'],
+    before  => Anchor['teamcity::agent::end'],
+  }
+  
   if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) 
       or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7'))) {
     file { "/etc/init.d/$service":

@@ -43,12 +43,9 @@ class teamcity::agent(
     content => "export AGENT_WORK_DIR=\"$work_dir\""
   }
 
-  $has_done_chown = '/etc/teamcity-agent.chown'
-
   # change the permissions of the agent installation.
   exec { 'teamcity::agent chown':
-    command     => "/bin/chown -R ${user}:${teamcity::common::group} ${home}* && /bin/touch $has_done_chown",
-    creates     => $has_done_chown,
+    command     => "/bin/chown -R ${user}:${teamcity::common::group} ${home}"
     subscribe   => Class['teamcity::agent::install'],
     require     => [
       Anchor['teamcity::agent::start'],
@@ -80,6 +77,7 @@ class teamcity::agent(
     ],
     before  => Anchor['teamcity::agent::end'],
   }
+  
   if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) 
       or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7'))) {
     file { "/etc/init.d/$service":

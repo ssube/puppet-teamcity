@@ -4,6 +4,6 @@ Description=<%= @service %>
 [Service]
 Type=forking
 PIDFile=<%= @temp_dir %>/buildAgent.pid
-ExecStart=<%= @home %>/bin/agent.sh start
-ExecStop=<%= @home %>/bin/agent.sh stop
+ExecStart=<%= @home %>/bin/sys-agent.sh start
+ExecStop=<%= @home %>/bin/sys-agent.sh stop
 User=<%= @user %>

@@ -45,7 +45,7 @@ class teamcity::agent(
 
   # change the permissions of the agent installation.
   exec { 'teamcity::agent chown':
-    command     => "/bin/chown -R ${user}:${teamcity::common::group} ${home}"
+    command     => "/bin/chown -R ${user}:${teamcity::common::group} ${home}",
     subscribe   => Class['teamcity::agent::install'],
     require     => [
       Anchor['teamcity::agent::start'],

@@ -56,7 +56,6 @@ class teamcity::server(
     hasrestart => true,
     require    => [
       Class['java'],
-      User[$user],
       Group[$teamcity::common::group],
       Package['teamcity-server']
     ],

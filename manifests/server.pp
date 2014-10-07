@@ -5,13 +5,14 @@
 #  - 'hsqldb' (default)
 class teamcity::server(
   $user            = 'teamcity-server',
+  $manage_user     = true,
   $home_dir        = '/opt/teamcity-server',
   $data_dir        = '/var/lib/teamcity-server',
   $log_dir         = '/var/log/teamcity-server',
   $conf_dir        = '/opt/teamcity-server/conf',
   $port            = 8111,
   $server_opts     = '',
-  $server_mem_opts = '-Xms750m -Xmx750m -XX:MaxPermSize=270m',
+  $server_mem_opts = '-Xms1g -Xmx2g -XX:MaxPermSize=270m',
   $db_type         = 'hsqldb'
 ) {
   $service      = 'teamcity-server'
@@ -25,10 +26,12 @@ class teamcity::server(
 
   include teamcity::common
 
-  user { $user:
-    ensure => present,
-    home   => $home_dir,
-    system => true,
+  if $manage_user {
+    user { $user:
+      ensure => present,
+      home   => $home_dir,
+      system => true,
+    }
   }
 
   include teamcity::db

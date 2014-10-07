@@ -44,7 +44,7 @@ class teamcity::server(
 
   class { 'teamcity::server::config':
     content => template('teamcity/teamcity-server.erb'),
-    require => Package['teamcity-server'],
+    require => Package["$package_name"],
   }
 
   contain teamcity::server::config
@@ -53,12 +53,12 @@ class teamcity::server(
     ensure     => running,
     enable     => true,
     hasstatus  => false,
-    status     => 'ps aux | grep /usr/bin/java | grep teamcity_logs',
+    status     => 'test $(ps -Af | grep teamcity | wc -l) -gt 1',
     hasrestart => true,
     require    => [
       Class['java'],
       Group[$teamcity::common::group],
-      Package['teamcity-server']
+      Package["$package_name"]
     ],
   }
 }

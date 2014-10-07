@@ -41,6 +41,12 @@ class teamcity::server(
   package { "$package_name":
     ensure  => installed,
   }
+  ->
+  file { ["$home_dir", "$data_dir", "$log_dir"]:
+    user    => "$user",
+    group   => "$teamcity::common::group",
+    mode    => 0755
+  }
 
   class { 'teamcity::server::config':
     content => template('teamcity/teamcity-server.erb'),

@@ -87,8 +87,8 @@ class teamcity::agent(
   }
   
   if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) 
-      or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7'))) {
-    file { "/etc/init.d/$service":
+      or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7') >= 0)) {
+    file { "/usr/lib/systemd/system/$service.service":
       ensure  => present,
       content => template('teamcity/teamcity-agent-systemd.erb'),
       mode    => '0755',

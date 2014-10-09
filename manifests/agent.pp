@@ -88,7 +88,8 @@ class teamcity::agent(
   
   if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) 
       or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7') >= 0)) {
-    file { "/usr/lib/systemd/system/$service.service":
+    $service_file = "/usr/lib/systemd/system/$service.service"
+    file { "$service_file":
       ensure  => present,
       content => template('teamcity/teamcity-agent-systemd.erb'),
       mode    => '0755',
@@ -96,7 +97,8 @@ class teamcity::agent(
       before  => Anchor['teamcity::agent::end'],
     }
   } else {
-    file { "/etc/init.d/$service":
+    $service_file = "/etc/init.d/$service"
+    file { "$service_file":
       ensure  => present,
       content => template('teamcity/teamcity-agent.erb'),
       mode    => '0755',
@@ -115,7 +117,7 @@ class teamcity::agent(
       Class['java'],
       Class['teamcity::common'],
       File["$home/bin/agent.sh"],
-      File["/etc/init.d/$service"]
+      File["$service_file"]
     ],
     before     => Anchor['teamcity::agent::end'],
   }

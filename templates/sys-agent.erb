@@ -4,7 +4,8 @@ ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 PID_FILE=$ROOT/logs/buildAgent.pid
 
 ARGS="$@"
-AGENT_SCRIPT=$($ROOT/agent.sh $ARGS >/dev/null 2>&1; echo $?)
+AGENT_OUT="$($ROOT/bin/agent.sh $ARGS)"
+AGENT_SCRIPT=$?
 
 if [ "$AGENT_SCRIPT" == "1" ];
 then
@@ -18,7 +19,7 @@ then
       echo "pid exists but agent not running"
       exit 1
     else
-      echo "agent running as pid $AGENT_PROC"
+      echo "agent already running as pid $AGENT_PROC (success)"
       exit 0
     fi
   else

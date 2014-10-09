@@ -3,7 +3,7 @@ Description=<%= @service %>
 
 [Service]
 Type=forking
-PIDFile=<%= @temp_dir %>/buildAgent.pid
+PIDFile=<%= @home %>/logs/buildAgent.pid
 ExecStart=<%= @home %>/bin/sys-agent.sh start
 ExecStop=<%= @home %>/bin/sys-agent.sh stop
 User=<%= @user %>

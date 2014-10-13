@@ -7,3 +7,6 @@ PIDFile=<%= @home %>/logs/buildAgent.pid
 ExecStart=<%= @home %>/bin/sys-agent.sh start
 ExecStop=<%= @home %>/bin/sys-agent.sh stop
 User=<%= @user %>
+
+[Install]
+WantedBy=multi-user.target

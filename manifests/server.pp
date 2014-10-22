@@ -20,6 +20,8 @@ class teamcity::server(
   $bin_dir      = "${home_dir}/bin"
   $temp_dir     = "${home_dir}/temp"
   $catalina_log = "${log_dir}/catalina.log"
+  
+  anchor { 'teamcity::server::start': }
 
   # see teamcity-server.erb
   # $catalina_tmp = "$data_dir/temp"
@@ -47,7 +49,15 @@ class teamcity::server(
     $service_file = "/usr/lib/systemd/system/$service.service"
     file { "$service_file":
       ensure  => present,
-      content => template('teamcity/teamcity-server-systemd.erb',
+      content => template('teamcity/teamcity-server-systemd.erb'),
+      mode    => '0755',
+      require => Anchor['teamcity::server::start'],
+      before  => Anchor['teamcity::server::end'],
+    }
+    
+    file { "$home_dir/bin/sys-server.sh":
+      ensure  => present,
+      content => template('teamcity/sys-server.erb'),
       mode    => '0755',
       require => Anchor['teamcity::server::start'],
       before  => Anchor['teamcity::server::end'],
@@ -56,7 +66,7 @@ class teamcity::server(
     $service_file = "/etc/init.d/$service"
     file { "$service_file":
       ensure  => present,
-      content => template('teamcity/teamcity-server.erb',
+      content => template('teamcity/teamcity-server.erb'),
       mode    => '0755',
       require => Anchor['teamcity::server::start'],
       before  => Anchor['teamcity::server::end'],
@@ -77,4 +87,6 @@ class teamcity::server(
       Package["$package_name"]
     ],
   }
+  
+  anchor { 'teamcity::server::end': }
 }

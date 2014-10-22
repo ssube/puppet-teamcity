@@ -1,6 +1,4 @@
-class teamcity::server::config(
-  $content
-) {
+class teamcity::server::config() {
   file { ["$teamcity::server::home_dir", "$teamcity::server::log_dir", "$teamcity::server::data_dir"]:
     owner   => $teamcity::server::user,
     group   => $teamcity::common::group,

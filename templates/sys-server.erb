@@ -10,6 +10,7 @@ export TEAMCITY_DIR='<%= @home_dir %>'
 export CATALINA_HOME='<%= @home_dir %>'
 export CATALINA_BASE='<%= @home_dir %>'
 export CATALINA_OUT='<%= @catalina_log %>'
+export CATALINA_PID="<%= @log_dir %>/tc.pid"
 
 export CATALINA_OPTS="<%= @server_opts %> -server $TEAMCITY_SERVER_MEM_OPTS \
  -Dlog4j.configuration=\"file:<%= @conf_dir %>/teamcity-server-log4j.xml\" \

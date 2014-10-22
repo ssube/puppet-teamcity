@@ -42,9 +42,25 @@ class teamcity::server(
     ensure  => installed,
   }
 
-  class { 'teamcity::server::config':
-    content => template('teamcity/teamcity-server.erb'),
-    require => Package["$package_name"],
+  if (($::operatingsystem == "Fedora" and versioncmp($::operatingsystemrelease, '20') >= 0) 
+      or ($::operatingsystem == "CentOS" and versioncmp($::operatingsystemmajrelease, '7') >= 0)) {
+    $service_file = "/usr/lib/systemd/system/$service.service"
+    file { "$service_file":
+      ensure  => present,
+      content => template('teamcity/teamcity-server-systemd.erb',
+      mode    => '0755',
+      require => Anchor['teamcity::server::start'],
+      before  => Anchor['teamcity::server::end'],
+    }
+  } else {
+    $service_file = "/etc/init.d/$service"
+    file { "$service_file":
+      ensure  => present,
+      content => template('teamcity/teamcity-server.erb',
+      mode    => '0755',
+      require => Anchor['teamcity::server::start'],
+      before  => Anchor['teamcity::server::end'],
+    }
   }
 
   contain teamcity::server::config

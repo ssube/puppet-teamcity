@@ -4,8 +4,8 @@ Requires=network.service
 
 [Service]
 Type=forking
-ExecStart=<%= @home %>/bin/sys-server.sh start
-ExecStop=<%= @home %>/bin/sys-server.sh stop
+ExecStart=<%= @bin_dir %>/sys-server.sh start
+ExecStop=<%= @bin_dir %>/sys-server.sh stop
 User=<%= @user %>
 Restart=always
 RestartSec=5s

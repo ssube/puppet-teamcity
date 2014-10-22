@@ -7,13 +7,4 @@ class teamcity::server::config(
     mode    => '0755',
     ensure => directory,
   }
-
-  file { "/etc/init.d/$teamcity::server::service":
-    ensure  => present,
-    content => $content,
-    mode    => '0755',
-    owner   => 'root',
-    group   => 'root',
-    notify  => Service[$teamcity::server::service],
-  }
 }

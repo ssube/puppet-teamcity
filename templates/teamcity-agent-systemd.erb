@@ -1,5 +1,6 @@
 [Unit]
 Description=<%= @service %>
+Requires=network.service
 
 [Service]
 Type=forking
@@ -7,6 +8,8 @@ PIDFile=<%= @home %>/logs/buildAgent.pid
 ExecStart=<%= @home %>/bin/sys-agent.sh start
 ExecStop=<%= @home %>/bin/sys-agent.sh stop
 User=<%= @user %>
+Restart=always
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,29 @@
+#! /bin/bash
+
+ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+
+# TC env vars
+export TEAMCITY_DATA_PATH='<%= @data_dir %>'
+export TEAMCITY_SERVER_OPTS='<%= @server_opts %>'
+export TEAMCITY_SERVER_MEM_OPTS='<%= @server_mem_opts %>'
+export TEAMCITY_DIR='<%= @home_dir %>'
+export CATALINA_HOME='<%= @home_dir %>'
+export CATALINA_BASE='<%= @home_dir %>'
+export CATALINA_OUT='<%= @catalina_log %>'
+
+export CATALINA_OPTS="<%= @server_opts %> -server $TEAMCITY_SERVER_MEM_OPTS \
+ -Dlog4j.configuration=\"file:<%= @conf_dir %>/teamcity-server-log4j.xml\" \
+ -Dteamcity_logs=<%= @log_dir %> -Djava.awt.headless=true"
+export LOGGING_CONFIG="-Djava.util.logging.config.file=<%= @conf_dir %>/logging.properties"
+
+# source teamcity-specific config
+[ -e /etc/sysconfig/teamcity ] && . /etc/sysconfig/teamcity
+
+# Kick off the built-in script
+ARGS="$@"
+SERVER_OUT="$($TEAMCITY_DIR/bin/catalina.sh $ARGS)"
+SERVER_SCRIPT=$?
+
+echo "Server out: $SERVER_OUT"
+
+exit $SERVER_SCRIPT
